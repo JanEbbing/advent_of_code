@@ -1,8 +1,16 @@
-# Template for solving Advent of Code puzzles in Rust with RustRover
+# Advent of Code 2024
+
+My solutions for AoC 2024. Run with `cargo run --bin <day>`, e.g. `cargo run --bin 01`.
+
+Run tests with `cargo test`.
+
+This project uses the JetBrains template for AoC 2024. Their README is below:
+
+## Template for solving Advent of Code puzzles in Rust with RustRover
 
 Read the [blog post](https://blog.jetbrains.com/rust/2024/11/29/advent-of-code-in-rust-for-the-rest-of-us/) that explains the structure and rationale behind this template.
 
-## Usage
+### Usage
 
 1. Create a new project from the template repository:
    - Using GitHub’s templating feature: Simply click the Use this template [button](https://github.com/new?template_name=advent-of-code-rust-template&template_owner=bravit) on the repository page, create a new repository, and then open it in [RustRover](https://www.jetbrains.com/rust/) by selecting *File | New | Project From Version Control…*.
