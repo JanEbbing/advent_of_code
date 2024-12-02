@@ -10,4 +10,5 @@ const_format = "0.2.33"
 
 # Additional recommended dependencies
 itertools = "0.13.0"
+num-traits = "0.2.19"
 regex = "1.11.1"
