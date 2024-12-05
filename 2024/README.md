@@ -4,6 +4,8 @@ My solutions for AoC 2024. Run with `cargo run --bin <day>`, e.g. `cargo run --b
 
 Run tests with `cargo test`.
 
+I used this to get more acquainted with Rust, and don't have much time this month, so expect the code quality to be horrendous/full of newbie mistakes. Don't run this in production when you need to deliver gifts last-minute.
+
 This project uses the JetBrains template for AoC 2024. Their README is below:
 
 ## Template for solving Advent of Code puzzles in Rust with RustRover
