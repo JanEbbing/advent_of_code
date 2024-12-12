@@ -91,17 +91,58 @@ fn main() -> Result<()> {
     //endregion
 
     //region Part 2
-    // println!("\n=== Part 2 ===");
-    //
-    // fn part2<R: BufRead>(reader: R) -> Result<usize> {
-    //     Ok(0)
-    // }
-    //
-    // assert_eq!(0, part2(BufReader::new(TEST.as_bytes()))?);
-    //
-    // let input_file = BufReader::new(File::open(INPUT_FILE)?);
-    // let result = time_snippet!(part2(input_file)?);
-    // println!("Result = {}", result);
+    println!("\n=== Part 2 ===");
+    
+    fn part2<R: BufRead>(reader: R) -> Result<usize> {
+        let mut map: Vec<Vec<u32>> = Vec::new();
+        for line in reader.lines().map(|l| l.unwrap()) {
+            map.push(line.chars().map(|c| c.to_digit(10).unwrap()).collect());
+        }
+        let n: usize = map.len();
+        let m: usize = map[0].len();
+        let mut trailhead_positions: Vec<(usize, usize)> = Vec::new();
+        for i in 0..n {
+            for j in 0..m {
+                if map[i][j] == 0 {
+                    trailhead_positions.push((i, j));
+                }
+            }
+        }
+        let mut result: usize = 0;
+        for (trailhead_x, trailhead_y) in trailhead_positions {
+            let mut cur_nodes: Vec<(usize, usize)> = vec![(trailhead_x, trailhead_y)];
+            let mut trailhead_score: usize = 0;
+            while !cur_nodes.is_empty() {
+                let Some((cur_x, cur_y)) = cur_nodes.pop() else { break; };
+                if map[cur_x][cur_y] == 9 {
+                    trailhead_score += 1;
+                }
+                let cur_height = map[cur_x][cur_y];
+                if cur_x > 0 && map[cur_x-1][cur_y] == cur_height + 1 {
+                    cur_nodes.push((cur_x-1, cur_y));
+                }
+                if cur_x < n-1 && map[cur_x+1][cur_y] == cur_height + 1 {
+                    cur_nodes.push((cur_x+1, cur_y));
+                }
+                if cur_y > 0 && map[cur_x][cur_y-1] == cur_height + 1 {
+                    cur_nodes.push((cur_x, cur_y-1));
+                }
+                if cur_y < m-1 && map[cur_x][cur_y+1] == cur_height + 1 {
+                    cur_nodes.push((cur_x, cur_y+1));
+                }
+            }
+
+            result += trailhead_score;
+        }
+
+        Ok(result)
+    }
+    
+    assert_eq!(81, part2(BufReader::new(TEST.as_bytes()))?);
+    
+    let input_file = BufReader::new(File::open(INPUT_FILE)?);
+    let result = time_snippet!(part2(input_file)?);
+    println!("Result = {}", result);
     //endregion
 
     Ok(())
