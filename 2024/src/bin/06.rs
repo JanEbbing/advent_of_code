@@ -86,7 +86,6 @@ fn main() -> Result<()> {
     
     fn part2<R: BufRead>(reader: R) -> Result<usize> {
         let mut map: Vec<Vec<char>> = Vec::new();
-        let mut visited_positions: Vec<(i32, i32)> = Vec::new();
         for line in reader.lines().map(|l| l.unwrap()) {
             map.push(line.chars().collect());
         }
@@ -101,20 +100,45 @@ fn main() -> Result<()> {
                 }
             }
         }
-        visited_positions.push(guard_pos);
-        let mut direction: (i32, i32) = (-1, 0);
-        let mut next_pos = (guard_pos.0 + direction.0, guard_pos.1 + direction.1);
-        while next_pos.0 >= 0 && next_pos.0 < n && next_pos.1 >= 0 && next_pos.1 < m {
-            while map[next_pos.0 as usize][next_pos.1 as usize] == '#' {
-                direction = get_next_direction(direction);
-                next_pos = (guard_pos.0 + direction.0, guard_pos.1 + direction.1);
+        let starting_guard_pos = guard_pos;
+        let starting_direction = (-1, 0);
+        let mut direction: (i32, i32);
+
+        let mut result: usize = 0;
+        for i in 0..n {
+            for j in 0..m {
+                // println!("Trying out next point");
+                if map[i as usize][j as usize] != '.' {
+                    continue;
+                }
+                map[i as usize][j as usize] = '#';
+
+                let mut visited_positions_and_direction: HashSet<(i32, i32, i32, i32)> = HashSet::new();
+                direction = starting_direction;
+                guard_pos = starting_guard_pos;
+                let mut next_pos = (guard_pos.0 + direction.0, guard_pos.1 + direction.1);
+                visited_positions_and_direction.insert((guard_pos.0, guard_pos.1, direction.0, direction.1));
+                while next_pos.0 >= 0 && next_pos.0 < n && next_pos.1 >= 0 && next_pos.1 < m {
+                    while map[next_pos.0 as usize][next_pos.1 as usize] == '#' {
+                        direction = get_next_direction(direction);
+                        next_pos = (guard_pos.0 + direction.0, guard_pos.1 + direction.1);
+                    }
+                    next_pos = (guard_pos.0 + direction.0, guard_pos.1 + direction.1);
+                    guard_pos = next_pos;
+                    next_pos = (guard_pos.0 + direction.0, guard_pos.1 + direction.1);
+                    if !visited_positions_and_direction.contains(&(guard_pos.0, guard_pos.1, direction.0, direction.1)) {
+                        visited_positions_and_direction.insert((guard_pos.0, guard_pos.1, direction.0, direction.1));
+                    } else {
+                        result += 1;
+                        break;
+                    }
+                }
+
+
+                map[i as usize][j as usize] = '.';
             }
-            next_pos = (guard_pos.0 + direction.0, guard_pos.1 + direction.1);
-            guard_pos = next_pos;
-            next_pos = (guard_pos.0 + direction.0, guard_pos.1 + direction.1);
-            visited_positions.push(guard_pos);
         }
-        Ok(0)
+        Ok(result)
     }
     
     assert_eq!(6, part2(BufReader::new(TEST.as_bytes()))?);
