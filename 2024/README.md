@@ -1,6 +1,6 @@
-# Advent of Code 2024
+# Advent of Code 2025
 
-My solutions for AoC 2024. Run with `cargo run --bin <day>`, e.g. `cargo run --bin 01`.
+My solutions for AoC 2025. Run with `cargo run --bin <day>`, e.g. `cargo run --bin 01`.
 
 Run tests with `cargo test`.
 

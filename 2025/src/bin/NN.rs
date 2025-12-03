@@ -3,7 +3,7 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 use code_timing_macros::time_snippet;
 use const_format::concatcp;
-use adv_code_2024::*;
+use adv_code_2025::*;
 
 const DAY: &str = "NN"; // TODO: Fill the day
 const INPUT_FILE: &str = concatcp!("input/", DAY, ".txt");
