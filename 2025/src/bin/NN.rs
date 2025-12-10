@@ -21,6 +21,8 @@ fn main() -> Result<()> {
     fn part1<R: BufRead>(reader: R) -> Result<usize> {
         // TODO: Solve Part 1 of the puzzle
         let answer = reader.lines().flatten().count();
+        for line in reader.lines().map(|l| l.unwrap()) {
+        }
         Ok(answer)
     }
 
