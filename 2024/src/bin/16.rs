@@ -3,6 +3,7 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::cmp;
 use std::cmp::Reverse;
+use std::collections::HashSet;
 use code_timing_macros::time_snippet;
 use priority_queue::PriorityQueue;
 use const_format::concatcp;
@@ -201,17 +202,26 @@ fn main() -> Result<()> {
     //endregion
 
     //region Part 2
-    // println!("\n=== Part 2 ===");
-    //
-    // fn part2<R: BufRead>(reader: R) -> Result<usize> {
-    //     Ok(0)
-    // }
-    //
-    // assert_eq!(0, part2(BufReader::new(TEST.as_bytes()))?);
-    //
-    // let input_file = BufReader::new(File::open(INPUT_FILE)?);
-    // let result = time_snippet!(part2(input_file)?);
-    // println!("Result = {}", result);
+    println!("\n=== Part 2 ===");
+
+    fn part2<R: BufRead>(reader: R) -> Result<usize> {
+        let map = read_map(reader);
+        let (maze_graph, start_pos, end_pos) = construct_graph_from_map(map);
+        let mut min_path_length: usize = usize::MAX;
+        for orientation in 0..4 {
+            min_path_length = cmp::min(result, find_shortest_path_length(&maze_graph, start_pos, (end_pos.0, end_pos.1, orientation)));
+        }
+        let mut tiles_on_shortest_path: HashSet<(usize, usize)> = HashSet::new();
+
+        Ok(tiles_on_shortest_path.len());
+    }
+
+    assert_eq!(45, part2(BufReader::new(TEST.as_bytes()))?);
+    assert_eq!(64, part2(BufReader::new(TEST2.as_bytes()))?);
+
+    let input_file = BufReader::new(File::open(INPUT_FILE)?);
+    let result = time_snippet!(part2(input_file)?);
+    println!("Result = {}", result);
     //endregion
 
     Ok(())
